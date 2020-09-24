@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_second"
+    tools:context=".EmployeeRegistrationSucessFailure"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView_success_failure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_green_light"
+        tools:text="Successfully Registered !"
+        android:textSize="32sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:layout_marginTop="120dp"/>
+
+    <TextView
+        android:id="@+id/textView2_success_failure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Please try again \n or \n contact your admin."
+        android:textColor="@android:color/black"
+        android:textSize="28sp"/>
+
+    <ImageView
+        android:id="@+id/image_success_failure_page"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="80dp"
+        tools:src="@drawable/thumbs_up"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

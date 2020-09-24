@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_second"
+    tools:context=".AdminActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Success"
+        android:layout_gravity="center_horizontal"
+        android:textSize="40sp"
+        android:textColor="#2f3a4e"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Employee Added Successfully!"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_green_light"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"/>
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/thumbs_up"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/name_admin_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="First Name"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/uid"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:textSize="16sp"/>
+
+    <RelativeLayout
+        android:layout_marginHorizontal="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/uid_admin_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UID"
+            android:textSize="20sp"
+            tools:text="A2qp50"
+            android:textColor="#2f3a4e"
+            android:textStyle="bold"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:letterSpacing="0.5"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rectangle_uid"/>
+        <ImageButton
+            android:id="@+id/btn_copy_text"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_text_copy"
+            android:layout_toRightOf="@+id/uid_admin_page"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/textView_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add a New Employee?"
+            android:textSize="16sp"
+            android:textColor="#2f3a4e"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/addNewEmployee_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click Here."
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/textView_admin"
+            android:layout_marginBottom="8dp"
+            android:textSize="16sp"
+            android:textColor="#d61870"
+            android:layout_marginStart="4dp" />
+    </RelativeLayout>
+
+
+</LinearLayout>

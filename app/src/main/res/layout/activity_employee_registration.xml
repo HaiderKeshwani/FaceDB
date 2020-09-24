@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_second"
+    tools:context=".EmployeeRegistrationActivity"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Identify Yourself"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_marginTop="48dp"
+        android:textColor="#2f3a4e"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please Take your Photo"
+        android:textSize="16sp"
+        android:textColor="#2f3a4e"
+        android:layout_margin="10dp"/>
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/img_profile_registration_page"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:civ_border_color="@android:color/black"
+            app:civ_border_width="2dp"
+            android:src="@drawable/profile_image"
+            android:scaleType="centerInside"
+            android:onClick="getImageEmployeeRegistration"/>
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/img_plus_registration_page"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:civ_border_color="@android:color/black"
+            app:civ_border_width="1dp"
+            android:src="@drawable/profile_camera"
+            android:layout_alignBottom="@+id/img_profile_registration_page"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:onClick="getImageEmployeeRegistration"/>
+    </RelativeLayout>
+    <EditText
+        android:id="@+id/dob_employee_registration_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="MM/DD/YY"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:textColor="#2f3a4e"
+        android:inputType="date"
+        android:background="@android:color/transparent"
+        android:layout_margin="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_uid"
+        android:layout_marginHorizontal="100dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp">
+        <EditText
+            android:id="@+id/uid_employee_registration_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter Unique Id"
+            android:background="@android:color/transparent"
+            android:textColorHint="#2f3a4e"
+            android:maxLength="10"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#2f3a4e"/>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Provided by HR"
+        android:textColor="@android:color/black"
+        android:layout_margin="10dp"
+        android:textSize="16sp"/>
+    <Button
+        android:id="@+id/btn_submit_employee_registration_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="10dp"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_curved"
+        android:textAllCaps="false"/>
+
+</LinearLayout>

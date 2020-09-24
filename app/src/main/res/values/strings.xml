@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Face DB 2</string>
+    <string name="welcome">Welcome!</string>
+    <string name="greeting">Nice to see you!</string>
+    <string name="admin">I am Admin</string>
+    <string name="employee">I am Employee</string>
+    <string name="uid">Please note below Employee UID. and inform
+Employee to Activate Employee App.</string>
+</resources>

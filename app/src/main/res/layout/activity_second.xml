@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondActivity"
+    android:background="@drawable/bg_first">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"
+            android:textSize="56sp"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="56sp"
+            android:layout_marginTop="40sp"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nice to see you again!"
+            android:textSize="16sp"
+            android:textColor="#6E7683"
+            android:layout_marginStart="60sp"
+            android:layout_marginTop="4sp"
+            />
+
+        <Button
+            android:id="@+id/btn_login_second_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_curved"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="8dp"
+            android:textSize="24sp"
+            android:textColor="#2f3a4e"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="40dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You are not a member?"
+        android:textSize="20sp"
+        android:textColor="#2f3a4e"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/register_second_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register."
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/textView_second"
+        android:layout_marginBottom="8dp"
+        android:textSize="20sp"
+        android:textColor="#d61870"
+        android:layout_marginStart="4dp" />
+
+
+
+</RelativeLayout>
