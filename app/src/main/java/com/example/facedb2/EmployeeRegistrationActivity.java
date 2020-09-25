@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,8 +73,8 @@ public class EmployeeRegistrationActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dobText = dob.getText().toString();
-                String uniqueIdText = uniqueId.getText().toString().trim();
+                final String dobText = dob.getText().toString();
+                final String uniqueIdText = uniqueId.getText().toString().trim();
 
                 if(dobText.isEmpty())
                     Toast.makeText(EmployeeRegistrationActivity.this, "Please Enter Date of Birth to Verify Registration", Toast.LENGTH_LONG).show();
@@ -93,28 +94,28 @@ public class EmployeeRegistrationActivity extends AppCompatActivity {
                                     try {
                                         if(response.getBoolean("status")) {
                                             Intent intent = new Intent(EmployeeRegistrationActivity.this, EmployeeRegistrationSucessFailure.class);
-                                            intent.putExtra("status","RegistrationSuccess");
-                                            intent.putExtra("textDisplayed","Successfully Registered !");
+                                            intent.putExtra("from","RegistrationSuccess");
+                                            intent.putExtra("dob",dobText);
+                                            intent.putExtra("empuniqueid",uniqueIdText);
                                             startActivity(intent);
                                             Animatoo.animateSlideRight(EmployeeRegistrationActivity.this);
                                         }
                                         else {
-                                            Toast.makeText(EmployeeRegistrationActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                                            Log.d("Error: ",response.getString("message"));
+                                            Intent intent = new Intent(EmployeeRegistrationActivity.this,EmployeeRegistrationSucessFailure.class);
+                                            intent.putExtra("from","RegistrationFailure");
+                                            startActivity(intent);
+                                            Animatoo.animateSlideRight(EmployeeRegistrationActivity.this);
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
 
                                 }
-
                                 @Override
                                 public void onError(ANError anError) {
                                     Toast.makeText(EmployeeRegistrationActivity.this, anError.getMessage(), Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(EmployeeRegistrationActivity.this,EmployeeRegistrationSucessFailure.class);
-                                    intent.putExtra("status","RegistrationFailure");
-                                    intent.putExtra("textDisplayed","Details are not matching!");
-                                    startActivity(intent);
-                                    Animatoo.animateSlideRight(EmployeeRegistrationActivity.this);
+                                    Log.d("Error:",anError.getErrorBody());
                                 }
                             });
                 }

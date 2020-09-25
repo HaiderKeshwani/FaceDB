@@ -16,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -30,6 +31,9 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONException;
@@ -44,7 +48,7 @@ import java.util.List;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class EmployeeAttendanceActivity extends AppCompatActivity implements LocationListener,EasyPermissions.PermissionCallbacks {
+public class EmployeeAttendanceActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     CircularImageView employeeAttendanceImage;
     RadioGroup radioGroupAttendance;
@@ -53,7 +57,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Loc
     Button submitAttendanceEmployee;
     File attendanceImage;
     private static final int REQUEST_LOCATION = 786;
-    LocationManager locationManager;
+    private FusedLocationProviderClient fusedLocationClient;
 
 
     @Override
@@ -70,6 +74,8 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Loc
         lastClockingInTime = findViewById(R.id.last_clocking_in_time);
         lastClockingOutTime = findViewById(R.id.last_clocking_out_time);
         submitAttendanceEmployee = findViewById(R.id.submit_employee_attendance_page);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         String[] locationPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
         if(EasyPermissions.hasPermissions(this,locationPermissions))
@@ -99,26 +105,31 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Loc
                     final File attendanceFinalImage = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), imageFileName + ".jpg");
                     attendanceImage.renameTo(attendanceFinalImage);
 
+                    SharedPreferences sp = getSharedPreferences("facedb.EMPLOYEE_REGISTRATION_STATUS",MODE_PRIVATE);
+                    String dob = sp.getString("dob","0/0/0");
+                    String empuniqueid = sp.getString("empuniqueid","0000");
+
 
                     AndroidNetworking.upload("http://facedb.fahm-technologies.com/api/FaceDb/IdentifyEmployee")
                             .addMultipartFile("file",attendanceFinalImage)
-                            .addMultipartParameter("address",currentAddress.getText().toString())
+                            .addMultipartParameter("dob",dob)
+                            .addMultipartParameter("EmpUniqueId",empuniqueid)
                             .setPriority(Priority.HIGH)
                             .build()
                             .getAsJSONObject(new JSONObjectRequestListener() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    String recognisedEmployee=null,recognisedEmployeeId = null;
+                                    Integer recognisedEmployee=null;
+                                    String recognisedEmployeeId = null;
                                     try {
-                                        recognisedEmployee = response.getString("empuniqueid");
-                                        recognisedEmployeeId = response.getString("employeeid");
+                                        recognisedEmployee = response.getJSONArray("data").getJSONObject(0).getInt("empuniqueid");
+                                        recognisedEmployeeId = response.getJSONArray("data").getJSONObject(0).getString("employeeid");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                     Toast.makeText(EmployeeAttendanceActivity.this, "Employee Id: " +recognisedEmployeeId+"\nEmployee Unique ID: " + recognisedEmployee, Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(EmployeeAttendanceActivity.this,EmployeeRegistrationSucessFailure.class);
-                                    intent.putExtra("textDisplayed","Attendance Marked \n Successfully!");
-                                    intent.putExtra("status","AttendanceSuccess");
+                                    intent.putExtra("from","AttendanceSuccess");
                                     startActivity(intent);
                                     Animatoo.animateSlideRight(EmployeeAttendanceActivity.this);
                                     //Set Shared Preferences for Last Address
@@ -135,15 +146,9 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Loc
                                     Animatoo.animateSlideRight(EmployeeAttendanceActivity.this);
                                 }
                             });
-
-
-
                 }
             }
         });
-
-
-        
     }
 
     private void setLastAttendance(String radioOption,String address) {
@@ -167,11 +172,25 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Loc
         lastClockingOutTime.setText("Last Clocking Out Time: " + sharedPreferences.getString("LAST_CLOCKING_OUT_TIME","-"));
     }
 
-    //Get Location Address using Location Manager and GPS
+    //Get Location Address using Fused Location Provider
     @SuppressLint("MissingPermission")
     private void getCurrentAddress() {
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, EmployeeAttendanceActivity.this);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(EmployeeAttendanceActivity.this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if(location!=null) {
+                            Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this);
+                            List<Address> address = null;
+                            try {
+                                address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            currentAddress.setText(address.get(0).getAddressLine(0));
+                            }
+                        }
+                });
     }
     //Image Picker Functions
     public void getImageEmployeeAttendance(View view) {
@@ -193,37 +212,6 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Loc
                     .load(attendanceImage)
                     .into(employeeAttendanceImage);
         }
-    }
-    // All Location Listener Interface Functions
-    @Override
-    public void onLocationChanged(Location location) {
-        //Geocoder is used to convert lat and long to address text
-        Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this);
-        List<Address> employeeAddress= null;
-        try {
-            //Last Index is to just get 1 result
-            employeeAddress = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        //The first result has an index of 0, so get 0th Index Address and set it to CurrentAddress
-        currentAddress.setText(employeeAddress.get(0).getAddressLine(0));
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
     //All Easy Permissions Interface Functions
     @Override

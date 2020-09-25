@@ -43,5 +43,7 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     //Animatoo
     implementation 'com.github.mohammadatif:Animatoo:master'
+    //Play services For Fused Location API
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 
 }
