@@ -54,7 +54,7 @@ public class EmployeeRegistrationActivity extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int year = calendar.get(Calendar.YEAR)-20;
-                DatePickerDialog datePickerDialog  = new DatePickerDialog(v.getContext(), android.R.style.Theme_Holo_Light, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog  = new DatePickerDialog(v.getContext(), android.R.style.Theme_Holo_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Calendar calendar = Calendar.getInstance();
