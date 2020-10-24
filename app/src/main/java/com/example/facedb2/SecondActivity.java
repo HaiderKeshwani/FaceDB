@@ -4,12 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
+import java.io.IOException;
+import java.util.List;
 
 public class SecondActivity extends AppCompatActivity {
     Button loginBtn;
@@ -29,17 +35,17 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Start Login Activity when Login Btn Clicked
-                startActivity(new Intent(SecondActivity.this,LoginActivity.class));
+                startActivity(new Intent(SecondActivity.this, LoginActivity.class));
                 //For Right Slide Transition
                 Animatoo.animateSlideRight(SecondActivity.this);
             }
         });
 
-        //Implement RegisterText according to Instructuions
+        //Implement RegisterText according to Instructions
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed(){
         super.onBackPressed();
         //Slide Left when back btn pressed
         Animatoo.animateSlideLeft(SecondActivity.this);

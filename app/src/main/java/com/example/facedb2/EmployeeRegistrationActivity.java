@@ -21,6 +21,8 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONException;
@@ -92,7 +94,7 @@ public class EmployeeRegistrationActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
-                                        if(response.getBoolean("status")) {
+                                        if(!response.getBoolean("status")) {
                                             Intent intent = new Intent(EmployeeRegistrationActivity.this, EmployeeRegistrationSucessFailure.class);
                                             intent.putExtra("from","RegistrationSuccess");
                                             intent.putExtra("dob",dobText);
@@ -114,7 +116,7 @@ public class EmployeeRegistrationActivity extends AppCompatActivity {
                                 }
                                 @Override
                                 public void onError(ANError anError) {
-                                    Toast.makeText(EmployeeRegistrationActivity.this, anError.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EmployeeRegistrationActivity.this, anError.getErrorBody(), Toast.LENGTH_SHORT).show();
                                     Log.d("Error:",anError.getErrorBody());
                                 }
                             });

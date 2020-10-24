@@ -16,6 +16,7 @@ public class EmployeeRegistrationSucessFailure extends AppCompatActivity {
     TextView textView1,textView2;
     ImageView imageView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class EmployeeRegistrationSucessFailure extends AppCompatActivity {
             editor.putString("STATUS","SUCCESS");
             editor.putString("DOB",getIntent().getStringExtra("dob"));
             editor.putString("UNIQUEID",getIntent().getStringExtra("empuniqueid"));
+            editor.putString("EMPID",getIntent().getStringExtra("empid"));
             editor.apply();
 
             finishAffinity();

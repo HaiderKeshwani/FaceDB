@@ -31,9 +31,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONException;
@@ -48,7 +45,7 @@ import java.util.List;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class EmployeeAttendanceActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+public class EmployeeAttendanceActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks,LocationListener {
 
     CircularImageView employeeAttendanceImage;
     RadioGroup radioGroupAttendance;
@@ -57,7 +54,7 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Eas
     Button submitAttendanceEmployee;
     File attendanceImage;
     private static final int REQUEST_LOCATION = 786;
-    private FusedLocationProviderClient fusedLocationClient;
+    public LocationManager locationManager;
 
 
     @Override
@@ -74,8 +71,6 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Eas
         lastClockingInTime = findViewById(R.id.last_clocking_in_time);
         lastClockingOutTime = findViewById(R.id.last_clocking_out_time);
         submitAttendanceEmployee = findViewById(R.id.submit_employee_attendance_page);
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         String[] locationPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
         if(EasyPermissions.hasPermissions(this,locationPermissions))
@@ -175,22 +170,8 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Eas
     //Get Location Address using Fused Location Provider
     @SuppressLint("MissingPermission")
     private void getCurrentAddress() {
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(EmployeeAttendanceActivity.this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if(location!=null) {
-                            Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this);
-                            List<Address> address = null;
-                            try {
-                                address = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            currentAddress.setText(address.get(0).getAddressLine(0));
-                            }
-                        }
-                });
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,EmployeeAttendanceActivity.this);
     }
     //Image Picker Functions
     public void getImageEmployeeAttendance(View view) {
@@ -238,5 +219,35 @@ public class EmployeeAttendanceActivity extends AppCompatActivity implements Eas
     public void onBackPressed() {
         super.onBackPressed();
         Animatoo.animateSlideLeft(EmployeeAttendanceActivity.this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Geocoder geocoder = new Geocoder(EmployeeAttendanceActivity.this);
+        List<Address> employeeAddress= null;
+        try {
+            //Last Index is to just get 1 result
+            employeeAddress = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        //The first result has an index of 0, so get 0th Index Address and set it to CurrentAddress
+        currentAddress.setText(employeeAddress.get(0).getAddressLine(0));
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
